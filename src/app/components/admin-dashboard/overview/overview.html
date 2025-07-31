@@ -1,0 +1,54 @@
+<div class="page-container" *ngIf="overviewData$ | async as data; else loading">
+  <h1>Overview da Equipe</h1>
+  <p>Um resumo geral do desempenho e atividades da sua equipe no mês atual.</p>
+
+  <div class="kpi-grid" [@listAnimation]="data.kpiCards.length">
+    <mat-card *ngFor="let kpi of data.kpiCards" [ngClass]="'kpi-card--' + kpi.color" class="kpi-card">
+      <div class="kpi-card__header">
+        <p class="kpi-card__title">{{ kpi.title }}</p>
+        <mat-icon class="kpi-card__icon">{{ kpi.icon }}</mat-icon>
+      </div>
+      <div class="kpi-card__content">
+        <span class="kpi-card__value">{{ kpi.value }}</span>
+        <span *ngIf="kpi.subValue" class="kpi-card__sub-value">{{ kpi.subValue }}</span>
+      </div>
+    </mat-card>
+  </div>
+
+  <div class="main-section-grid">
+    <div class="chart-container" [@listAnimation]="data.salesByAgentChart.length">
+      <h2>Desempenho por Agente (Instaladas no Mês)</h2>
+      <div class="chart-wrapper">
+        <ngx-charts-bar-vertical
+          *ngIf="data.salesByAgentChart.length > 0; else noChartData"
+          [results]="data.salesByAgentChart"
+          [xAxis]="true"
+          [yAxis]="true"
+          [scheme]="chartColorScheme"
+          [barPadding]="8"
+          [roundDomains]="true">
+        </ngx-charts-bar-vertical>
+        <ng-template #noChartData>
+          <div class="no-data-placeholder">Nenhuma venda instalada para exibir no gráfico.</div>
+        </ng-template>
+      </div>
+    </div>
+
+    <div class="activity-feed-container" [@listAnimation]="data.activityFeed.length">
+      <h2>Atividades Recentes</h2>
+      <mat-list class="activity-feed">
+        <mat-list-item *ngFor="let item of data.activityFeed" class="activity-item">
+          <mat-icon matListItemIcon [ngClass]="'status--' + item.status">{{ item.status === 'instalada' ? 'check_circle' : 'info' }}</mat-icon>
+          <div matListItemTitle class="activity-title"><strong>{{ item.agentName }}</strong> {{ item.action }}</div>
+          <div matListItemLine class="activity-subtitle">{{ item.saleInfo }} | {{ item.timestamp | date:'dd/MM HH:mm' }}</div>
+        </mat-list-item>
+      </mat-list>
+    </div>
+  </div>
+</div>
+
+<ng-template #loading>
+  <div class="page-container">
+    <p>Calculando métricas...</p>
+  </div>
+</ng-template>

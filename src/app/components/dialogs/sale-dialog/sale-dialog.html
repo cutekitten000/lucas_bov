@@ -1,0 +1,107 @@
+<h1 mat-dialog-title>{{ isEditMode ? 'Editar Venda' : 'Registrar Nova Venda' }}</h1>
+
+<div mat-dialog-content>
+  <form [formGroup]="saleForm" class="sale-form">
+    
+    <div class="form-row">
+      <mat-form-field appearance="outline">
+        <mat-label>Data da Venda</mat-label>
+        <input matInput [matDatepicker]="saleDatePicker" formControlName="saleDate">
+        <mat-datepicker-toggle matSuffix [for]="saleDatePicker"></mat-datepicker-toggle>
+        <mat-datepicker #saleDatePicker></mat-datepicker>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>CPF/CNPJ</mat-label>
+        <input matInput formControlName="customerCpfCnpj" mask="000.000.000-00||00.000.000/0000-00">
+      </mat-form-field>
+    </div>
+
+    <div class="form-row">
+      <mat-form-field appearance="outline">
+        <mat-label>Data da Instalação</mat-label>
+        <input matInput [matDatepicker]="installDatePicker" formControlName="installationDate">
+        <mat-datepicker-toggle matSuffix [for]="installDatePicker"></mat-datepicker-toggle>
+        <mat-datepicker #installDatePicker></mat-datepicker>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Período</mat-label>
+        <mat-select formControlName="period"  panelClass="custom-overlay-panel">
+          <mat-option *ngFor="let option of periodOptions" [value]="option">{{ option }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+
+    <div class="form-row">
+        <mat-form-field appearance="outline">
+          <mat-label>Status</mat-label>
+          <mat-select formControlName="status" panelClass="custom-overlay-panel">
+            <mat-option *ngFor="let option of statusOptions" [value]="option">{{ option }}</mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Número do Cliente</mat-label>
+          <input matInput formControlName="customerPhone" placeholder="(XX) XXXXX-XXXX" mask="(00) 0000-0000||(00) 0 0000-0000">
+        </mat-form-field>
+    </div>
+
+    <div class="form-row">
+        <mat-form-field appearance="outline">
+          <mat-label>Tipo de Venda</mat-label>
+          <mat-select formControlName="saleType" panelClass="custom-overlay-panel">
+            <mat-option *ngFor="let option of saleTypeOptions" [value]="option">{{ option }}</mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Pagamento</mat-label>
+          <mat-select formControlName="paymentMethod" panelClass="custom-overlay-panel">
+            <mat-option *ngFor="let option of paymentOptions" [value]="option">{{ option }}</mat-option>
+          </mat-select>
+        </mat-form-field>
+    </div>
+
+    <div class="form-row">
+        <mat-form-field appearance="outline">
+            <mat-label>Ticket</mat-label>
+            <input matInput formControlName="ticket">
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Velocidade</mat-label>
+          <mat-select formControlName="speed" panelClass="custom-overlay-panel">
+            <mat-option *ngFor="let option of speedOptions" [value]="option">{{ option }}</mat-option>
+          </mat-select>
+        </mat-form-field>
+    </div>
+    
+    <div class="form-row">
+        <mat-form-field appearance="outline">
+          <mat-label>UF</mat-label>
+          <mat-select formControlName="uf" panelClass="custom-overlay-panel">
+            <mat-option *ngFor="let option of ufOptions" [value]="option">{{ option }}</mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>OS</mat-label>
+          <input matInput formControlName="os">
+        </mat-form-field>
+    </div>
+
+    <div class="form-row">
+       <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Observação</mat-label>
+        <textarea matInput formControlName="notes" rows="4"></textarea>
+      </mat-form-field>
+    </div>
+
+  </form>
+</div>
+
+<div mat-dialog-actions align="end">
+  <button mat-button (click)="onCancel()">Cancelar</button>
+  <button mat-flat-button color="primary" (click)="onSave()" [disabled]="saleForm.invalid">Salvar</button>
+</div>

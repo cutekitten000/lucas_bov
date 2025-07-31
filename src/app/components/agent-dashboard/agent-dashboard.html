@@ -1,0 +1,269 @@
+<div class="dashboard-container" *ngIf="agent$ | async as agent">
+    <mat-toolbar class="main-toolbar">
+        <div class="toolbar-section">
+            <span>Bem vindo, <strong>{{ agent.name }}</strong></span>
+        </div>
+        <span class="toolbar-spacer"></span>
+        <div class="toolbar-section links-section">
+            <button mat-button (click)="openTeamRankingDialog()">
+                BOV EQUIPE
+            </button>
+            <button mat-button (click)="openTodaySales()">Vendas do Dia</button>
+            <button mat-button (click)="openYesterdaySales()">
+                Vendas de Ontem
+            </button>
+            <button mat-button (click)="openUsefulLinksDialog()">
+                Links Úteis
+            </button>
+            <button mat-button (click)="openScriptTakeDialog()">
+                Script-Take
+            </button>
+            <button mat-button (click)="openChatDialog()">Chat</button>
+        </div>
+        <span class="toolbar-spacer"></span>
+        <div class="toolbar-section user-menu-section">
+            <button mat-button (click)="onDownloadSheet()">
+                <mat-icon>download</mat-icon>
+                <span>Baixar Planilha do Mês</span>
+            </button>
+
+            <button
+                mat-flat-button
+                color="primary"
+                [matMenuTriggerFor]="userMenu"
+                class="user-menu-button"
+            >
+                <mat-icon>person</mat-icon>
+                <span>Meu Usuário</span>
+            </button>
+
+            <mat-menu #userMenu="matMenu" xPosition="before">
+                <button mat-menu-item (click)="openUserProfileDialog()">
+                    <mat-icon>manage_accounts</mat-icon>
+                    <span>Meu Perfil</span>
+                </button>
+                <button mat-menu-item (click)="logout()">
+                    <mat-icon>logout</mat-icon>
+                    <span>Sair</span>
+                </button>
+            </mat-menu>
+        </div>
+    </mat-toolbar>
+
+    <main class="dashboard-content">
+        <div class="kpi-cards-container">
+            <mat-card class="kpi-card blue">
+                <div class="kpi-content">
+                    <p class="kpi-title">Aprovisionamento</p>
+                    <span class="kpi-value">{{ kpi.aprovisionamento }}</span>
+                </div>
+                <mat-icon class="kpi-icon-bg blue">hourglass_top</mat-icon>
+            </mat-card>
+
+            <mat-card class="kpi-card green">
+                <div class="kpi-content">
+                    <p class="kpi-title">Instalada</p>
+                    <span class="kpi-value">{{ kpi.instalada }}</span>
+                </div>
+                <mat-icon class="kpi-icon-bg">check_circle</mat-icon>
+            </mat-card>
+
+            <mat-card class="kpi-card yellow">
+                <div class="kpi-content">
+                    <p class="kpi-title">Pendência</p>
+                    <span class="kpi-value">{{ kpi.pendencia }}</span>
+                </div>
+                <mat-icon class="kpi-icon-bg">pending</mat-icon>
+            </mat-card>
+
+            <mat-card class="kpi-card red">
+                <div class="kpi-content">
+                    <p class="kpi-title">Canceladas</p>
+                    <span class="kpi-value">{{ kpi.canceladas }}</span>
+                </div>
+                <mat-icon class="kpi-icon-bg">cancel</mat-icon>
+            </mat-card>
+
+            <mat-card class="kpi-card gray">
+                <div class="kpi-content">
+                    <p class="kpi-title">Vendas Totais</p>
+                    <span class="kpi-value">{{ kpi.totalSales }}</span>
+                </div>
+                <mat-icon class="kpi-icon-bg">summarize</mat-icon>
+            </mat-card>
+            
+            <mat-card class="kpi-card purple">
+                <div class="kpi-content">
+                    <p class="kpi-title">Total / Meta</p>
+                    <span class="kpi-value"
+                        >{{ kpi.instalada }}/{{ kpi.meta }}</span
+                    >
+                </div>
+
+                <div
+                    class="kpi-chart"
+                    role="progressbar"
+                    [style.--progress]="kpi.metaPercentage"
+                    [attr.aria-valuenow]="kpi.metaPercentage"
+                ></div>
+                <mat-icon class="kpi-icon-bg">show_chart</mat-icon>
+            </mat-card>
+        </div>
+
+        <div class="actions-bar">
+            <div class="filter-inputs">
+                <mat-form-field appearance="outline" class="month-picker">
+                    <mat-label>Mês e Ano</mat-label>
+                    <input
+                        matInput
+                        [matDatepicker]="picker"
+                        [formControl]="monthYearControl"
+                        readonly
+                    />
+                    <mat-datepicker-toggle
+                        matSuffix
+                        [for]="picker"
+                    ></mat-datepicker-toggle>
+                    <mat-datepicker
+                        #picker
+                        startView="multi-year"
+                        (monthSelected)="monthYearSelected($event, picker)"
+                    ></mat-datepicker>
+                </mat-form-field>
+
+                <mat-form-field appearance="outline" class="search-field">
+                    <mat-label>Buscar...</mat-label>
+                    <input
+                        matInput
+                        (keyup)="applyFilter($event)"
+                        placeholder="CPF/CNPJ, OS, TICKET..."
+                    />
+                    <mat-icon matSuffix>search</mat-icon>
+                </mat-form-field>
+            </div>
+
+            <button mat-flat-button color="primary" (click)="openSaleDialog()">
+                <mat-icon>add</mat-icon>
+                <span>Nova Venda</span>
+            </button>
+        </div>
+
+        <div class="table-container">
+            <table mat-table [dataSource]="dataSource">
+                <ng-container matColumnDef="status">
+                    <th mat-header-cell *matHeaderCellDef>Status</th>
+                    <td mat-cell *matCellDef="let element">
+                        <span 
+                            class="status-chip"
+                            [ngClass]="getStatusClass(element.status)"
+                            [matMenuTriggerFor]="statusMenu"
+                            matTooltip="Clique para alterar o status"
+                        >
+                            {{ element.status }}
+                        </span>
+                        <mat-menu #statusMenu="matMenu">
+                            <button 
+                                *ngFor="let status of statusOptions" 
+                                mat-menu-item 
+                                (click)="updateSaleStatus(element, status)"
+                            >
+                                <span [ngClass]="getStatusClass(status)">{{ status }}</span>
+                            </button>
+                        </mat-menu>
+                    </td>
+                </ng-container>
+
+                <ng-container matColumnDef="cpfCnpj">
+                    <th mat-header-cell *matHeaderCellDef>CPF/CNPJ</th>
+                    <td mat-cell *matCellDef="let element">
+                        {{ element.customerCpfCnpj }}
+                    </td>
+                </ng-container>
+
+                <ng-container matColumnDef="saleDate">
+                    <th mat-header-cell *matHeaderCellDef>Data da Venda</th>
+                    <td mat-cell *matCellDef="let element">
+                        {{ element.saleDate | date: 'dd/MM/yyyy' }}
+                    </td>
+                </ng-container>
+
+                <ng-container matColumnDef="installationDate">
+                    <th mat-header-cell *matHeaderCellDef>
+                        Data da Instalação
+                    </th>
+                    <td mat-cell *matCellDef="let element">
+                        {{ element.installationDate | date: 'dd/MM/yyyy' }}
+                    </td>
+                </ng-container>
+
+                <ng-container matColumnDef="period">
+                    <th mat-header-cell *matHeaderCellDef>Período</th>
+                    <td mat-cell *matCellDef="let element">
+                        {{ element.period }}
+                    </td>
+                </ng-container>
+
+                <ng-container matColumnDef="customerPhone">
+                    <th mat-header-cell *matHeaderCellDef>N° do Cliente</th>
+                    <td mat-cell *matCellDef="let element">
+                        {{ element.customerPhone }}
+                    </td>
+                </ng-container>
+
+                <ng-container matColumnDef="ticket">
+                    <th mat-header-cell *matHeaderCellDef>Ticket</th>
+                    <td mat-cell *matCellDef="let element">
+                        {{ element.ticket }}
+                    </td>
+                </ng-container>
+
+                <ng-container matColumnDef="os">
+                    <th mat-header-cell *matHeaderCellDef>OS</th>
+                    <td mat-cell *matCellDef="let element">{{ element.os }}</td>
+                </ng-container>
+
+                <ng-container matColumnDef="actions">
+                    <th
+                        mat-header-cell
+                        *matHeaderCellDef
+                        class="actions-header"
+                    >
+                        Ações
+                    </th>
+                    <td mat-cell *matCellDef="let element" class="actions-cell">
+                        <button
+                            mat-icon-button
+                            aria-label="Editar venda"
+                            (click)="onEditSale(element)"
+                        >
+                            <mat-icon>edit</mat-icon>
+                        </button>
+                        <button
+                            mat-icon-button
+                            aria-label="Excluir venda"
+                            (click)="onDeleteSale(element)"
+                        >
+                            <mat-icon>delete</mat-icon>
+                        </button>
+
+                        <button
+                            mat-icon-button
+                            aria-label="Ver observação"
+                            (click)="openNotesDialog(element.notes)"
+                            [disabled]="!element.notes"
+                            [matTooltip]="element.notes ? 'Ver observação' : 'Nenhuma observação registrada'"
+                        >
+                            <mat-icon>comment</mat-icon>
+                        </button>
+                    </td>
+                </ng-container>
+
+                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                <tr
+                    mat-row
+                    *matRowDef="let row; columns: displayedColumns;"
+                ></tr>
+            </table>
+        </div>
+    </main>
+</div>

@@ -1,0 +1,233 @@
+@use '@angular/material' as mat;
+
+html {
+  // MUDANÇA: 'dark' agora é o padrão
+  color-scheme: dark;
+
+  @include mat.theme((
+    color: (
+      // CORRIGIDO: Usando paletas válidas da nova API
+      primary: mat.$blue-palette,
+      tertiary: mat.$violet-palette,
+    ),
+    typography: (
+      plain-family: 'Roboto',
+    ),
+    density: 0,
+  ));
+}
+
+// Estilos globais (sem alteração)
+body {
+  background: var(--mat-sys-color-surface);
+  color: var(--mat-sys-color-on-surface);
+  font-family: 'Roboto', sans-serif;
+  height: 100%;
+  margin: 0;
+}
+
+// ... (código existente do @use e do tema)
+
+// =============================================
+// ESTILO GLOBAL PARA MODAIS (DIALOGS)
+// =============================================
+// Usamos uma classe customizada que será aplicada a todos os nossos modais.
+.custom-dialog-container {
+  // Define o fundo usando a mesma cor de "superfície" dos nossos cards e tabelas
+  .mat-mdc-dialog-container .mdc-dialog__surface {
+    background-color: #1f2937; // Cor Grafite
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+  }
+
+  // Estiliza o título do modal
+  .mat-mdc-dialog-title {
+    font-weight: 600;
+    font-size: 1.25rem;
+    padding-bottom: 16px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+  }
+
+  // Estiliza a área de ações (botões)
+  .mat-mdc-dialog-actions {
+    padding-top: 16px;
+    border-top: 1px solid rgba(255, 255, 255, 0.12);
+  }
+
+  // ADICIONE ESTA NOVA REGRA PARA O BOTÃO DE EXCLUIR
+  .mat-mdc-button-base[color="warn"] {
+    // Usando a variável de cor que já definimos
+    background-color: #ef4444; // Vermelho Rubi
+    color: #fff; // Texto branco
+  }
+}
+
+
+// =============================================
+// ESTILO GLOBAL PARA PAINÉIS FLUTUANTES (VERSÃO FINAL E FORÇADA)
+// =============================================
+.custom-overlay-panel {
+  
+  // Forçamos o estilo na 'superfície' interna do painel
+  .mdc-menu-surface {
+    background-color: #1f2937 !important; // <-- ADICIONADO !important
+    border-radius: 8px !important;
+    border: 1px solid rgba(255, 255, 255, 0.12) !important;
+    box-shadow: none !important;
+  }
+
+  // Estilo para a opção selecionada dentro do dropdown
+  .mat-mdc-option.mdc-list-item--selected:not(.mdc-list-item--disabled) {
+    background: rgba(255, 255, 255, 0.1) !important;
+  }
+
+  // Cor do texto das opções
+  .mat-mdc-option .mdc-list-item__primary-text {
+    color: rgba(255, 255, 255, 0.9);
+  }
+
+  // Cor do ícone de 'check' quando uma opção está selecionada
+  .mat-mdc-option-check-mark {
+    color: #a78bfa;
+  }
+}
+
+.cdk-overlay-pane:not(.mat-mdc-select-panel-above) div.mat-mdc-select-panel {
+  background-color: #334155;
+}
+
+// =============================================
+// ESTILO GLOBAL PARA O PAINEL DO CALENDÁRIO (Datepicker)
+// =============================================
+.mat-datepicker-popup {
+  // Remove qualquer cor de fundo do container mais externo
+  .mat-mdc-dialog-container .mdc-dialog__surface {
+    background: transparent !important;
+    box-shadow: none !important;
+  }
+  
+  // Aplica nosso estilo ao container de conteúdo do calendário
+  .mat-datepicker-content {
+    // Usando a mesma cor de superfície dos nossos cards e modais
+    background-color: #334155; // Cor "Grafite"
+    border-radius: 8px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+  }
+
+  // Cor dos botões de navegação de mês/ano e do período
+  .mat-calendar-arrow {
+    border-top-color: #fff;
+  }
+
+  .mat-calendar-period-button {
+    color: #fff;
+  }
+
+  // Cor dos dias da semana (Dom, Seg, Ter...)
+  .mat-calendar-table-header th {
+    color: rgba(255, 255, 255, 0.7);
+  }
+
+  // Cor dos números dos dias
+  .mat-calendar-body-label,
+  .mat-calendar-body-cell-content {
+    color: rgba(255, 255, 255, 0.9);
+  }
+  
+  // Estilo do dia de hoje (não selecionado)
+  .mat-calendar-body-today {
+    border-color: rgba(255, 255, 255, 0.5);
+  }
+
+  // Estilo do dia selecionado
+  .mat-calendar-body-selected {
+    background-color: #3b82f6; // Nossa cor primária "Azul Intenso"
+    color: #fff;
+  }
+}
+
+// =============================================
+// ESTILO GLOBAL PARA A BARRA DE ROLAGEM (SCROLLBAR)
+// =============================================
+
+// --- Para Firefox ---
+// Define a largura e as cores da barra de rolagem de forma simples.
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #4b5563 #1f2937; // Cor do "polegar" e do "trilho"
+}
+
+// --- Para Chrome, Edge, Safari e outros navegadores baseados em WebKit ---
+
+// Define a largura da barra de rolagem
+::-webkit-scrollbar {
+  width: 12px;
+  height: 12px;
+}
+
+// O "trilho" por onde a barra corre
+::-webkit-scrollbar-track {
+  background: #1f2937; // Cor "Grafite" da nossa superfície
+  border-radius: 10px;
+}
+
+// O "polegar" (a parte que você arrasta)
+::-webkit-scrollbar-thumb {
+  background-color: #4b5563; // Um cinza médio que contrasta bem
+  border-radius: 10px;
+  // Cria uma borda com a mesma cor do trilho para um efeito de "padding"
+  border: 3px solid #1f2937; 
+}
+
+// Efeito ao passar o mouse sobre o polegar
+::-webkit-scrollbar-thumb:hover {
+  background-color: #6b7280;
+}
+
+// ESTILO GLOBAL PARA PAINÉIS DE MENU (mat-menu)
+// =============================================
+// A classe .mat-mdc-menu-panel é aplicada por padrão pelo Angular Material
+.mat-mdc-menu-panel {
+  // Usando a mesma cor de superfície dos nossos cards e modais
+  background-color: #1f2937 !important; // Cor "Grafite"
+  border-radius: 8px !important;
+}
+
+// Estiliza cada item dentro do menu
+.mat-mdc-menu-item {
+  // Garante que o ícone e o texto fiquem alinhados
+  display: flex;
+  align-items: center;
+
+  // Cor do ícone
+  .mat-icon {
+    color: rgba(255, 255, 255, 0.7);
+    margin-right: 12px;
+  }
+  
+  // Efeito de hover/focus no item
+  &:hover:not([disabled]), &:focus:not([disabled]) {
+    background-color: rgba(255, 255, 255, 0.05);
+  }
+}
+
+
+// Estilo para o container de modais em tela cheia
+.fullscreen-dialog-container .mat-mdc-dialog-container .mdc-dialog__surface {
+  border-radius: 16px !important; // <-- ADICIONE/GARANTA ESTA LINHA
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.3) !important; // Adiciona uma sombra
+}
+
+.cdk-overlay-backdrop.cdk-overlay-dark-backdrop {
+  // Aumentamos a opacidade do preto para 85% para escurecer mais o fundo
+  background: rgba(0, 0, 0, 0.85);
+
+  // EFEITO EXTRA: Adicionamos um desfoque no conteúdo que está atrás
+  // para um visual ainda mais moderno e focado.
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
+table {
+  margin-bottom: 100px !important;
+}
