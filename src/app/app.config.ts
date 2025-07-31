@@ -35,13 +35,14 @@ export const MY_DATE_FORMATS = {
 };
 
 const firebaseConfig = {
-  apiKey: "AIzaSyDlbF62s66BjUmuWZRyaKDpOFsjwos06dM",
-  authDomain: "lucas-tlvbov.firebaseapp.com",
-  projectId: "lucas-tlvbov",
-  storageBucket: "lucas-tlvbov.firebasestorage.app",
-  messagingSenderId: "275115233851",
-  appId: "1:275115233851:web:ffc50bea9e5114666b821e"
+  apiKey: "AIzaSyB3N56X8DcDkdpys5iRVn7QYn9bs7SVG30",
+  authDomain: "lucas-bov.firebaseapp.com",
+  projectId: "lucas-bov",
+  storageBucket: "lucas-bov.firebasestorage.app",
+  messagingSenderId: "838511603184",
+  appId: "1:838511603184:web:54f0d3da98ed6df7624135"
 };
+
 
 
 
