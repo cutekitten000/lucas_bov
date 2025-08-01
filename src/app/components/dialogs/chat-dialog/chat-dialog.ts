@@ -12,10 +12,10 @@ import {
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import {
+    MAT_DIALOG_DATA,
     MatDialog,
     MatDialogModule,
     MatDialogRef,
-    MAT_DIALOG_DATA,
 } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
@@ -451,25 +451,32 @@ export class ChatDialog implements OnInit, AfterViewChecked, OnDestroy {
 
     @HostListener('paste', ['$event'])
     handlePaste(event: ClipboardEvent): void {
-        event.preventDefault();
-
         const items = event.clipboardData?.items;
         if (!items) return;
 
+        // Itera sobre os itens colados
         for (let i = 0; i < items.length; i++) {
             const item = items[i];
+            // Verifica se o item é um arquivo de imagem
             if (item.kind === 'file' && item.type.startsWith('image/')) {
+                // Se for uma imagem, previne a ação padrão (para não colar o caminho do arquivo)
+                event.preventDefault();
                 const file = item.getAsFile();
                 if (file) {
+                    // Cria um nome para o arquivo e faz o upload
                     const newFileName = `colado_${Date.now()}.png`;
                     const namedFile = new File([file], newFileName, {
                         type: file.type,
                     });
                     this.uploadFile(namedFile);
-                    return;
                 }
+                // Retorna para não executar mais nada no evento de colar
+                return;
             }
         }
+        // Se o loop terminar e nenhum arquivo de imagem for encontrado,
+        // a função termina sem chamar event.preventDefault().
+        // Isso permite que o navegador execute a ação padrão de colar texto no input.
     }
 
     close(): void {
