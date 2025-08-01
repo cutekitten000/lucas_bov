@@ -165,9 +165,9 @@ export class DatabaseService {
         const q = query(
             this.salesCollection,
             where('agentUid', '==', agentUid),
-            where('saleDate', '>=', Timestamp.fromDate(startDate)),
-            where('saleDate', '<=', Timestamp.fromDate(endDate)),
-            orderBy('saleDate', 'desc')
+            where('installationDate', '>=', Timestamp.fromDate(startDate)),
+            where('installationDate', '<=', Timestamp.fromDate(endDate)),
+            orderBy('installationDate', 'desc')
         );
 
         const querySnapshot = await getDocs(q);
@@ -208,8 +208,8 @@ export class DatabaseService {
 
         const q = query(
             this.salesCollection,
-            where('saleDate', '>=', Timestamp.fromDate(startDate)),
-            where('saleDate', '<=', Timestamp.fromDate(endDate))
+            where('installationDate', '>=', Timestamp.fromDate(startDate)),
+            where('installationDate', '<=', Timestamp.fromDate(endDate))
         );
 
         const querySnapshot = await getDocs(q);
