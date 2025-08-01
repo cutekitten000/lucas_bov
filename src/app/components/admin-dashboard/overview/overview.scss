@@ -3,36 +3,43 @@ $green: #22c55e;
 $blue: #3b82f6;
 $purple: #8b5cf6;
 $orange: #f97316;
-$red: #ef4444;     // <-- Variável que estava faltando
-$yellow: #eab308; // <-- Variável que estava faltando
+$red: #ef4444;
+$yellow: #eab308;
 $surface-color: #1f2937;
 $border-color: rgba(255, 255, 255, 0.1);
 $text-light: rgba(255, 255, 255, 0.7);
 
-:host { 
-    display: block; 
+:host {
+    display: block;
 }
 
 .page-container {
-    h1 { margin: 0; font-size: 1.8rem; font-weight: 600; }
-    p { margin: 0 0 24px 0; color: rgba(255, 255, 255, 0.6); }
+    h1 {
+        margin: 0;
+        font-size: 1.8rem;
+        font-weight: 600;
+    }
+
+    p {
+        margin: 0 0 24px 0;
+        color: rgba(255, 255, 255, 0.6);
+    }
 }
 
 .kpi-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-    gap: 24px;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); // Diminuí o tamanho mínimo
+    gap: 20px; // Diminuí o espaçamento
 }
 
-// NOVO ESTILO PROFISSIONAL PARA OS CARDS
+// ESTILO PROFISSIONAL PARA OS CARDS
 .kpi-card {
     background: $surface-color;
     border-radius: 12px;
-    padding: 24px;
+    padding: 20px; // <<< PADDING DIMINUÍDO
     color: #fff;
     border: 1px solid $border-color;
-    // A borda superior colorida dá a identidade visual
-    border-top: 4px solid transparent; 
+    border-top: 4px solid transparent;
     display: flex;
     flex-direction: column;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
@@ -50,25 +57,25 @@ $text-light: rgba(255, 255, 255, 0.7);
     }
 
     &__title {
-        font-size: 0.9rem;
+        font-size: 0.85rem; // <<< FONTE DO TÍTULO DIMINUÍDA
         font-weight: 500;
         color: $text-light;
         margin: 0;
     }
 
     &__icon {
-        font-size: 24px;
-        height: 24px;
-        width: 24px;
+        font-size: 22px; // <<< ÍCONE DIMINUÍDO
+        height: 22px;
+        width: 22px;
     }
 
     &__content {
-        margin-top: 16px;
+        margin-top: 12px; // <<< MARGEM DIMINUÍDA
         width: 100%;
     }
 
     &__value {
-        font-size: 2.5rem;
+        font-size: 2.2rem; // <<< FONTE DO VALOR PRINCIPAL DIMINUÍDA
         font-weight: 700;
         line-height: 1.1;
     }
@@ -80,11 +87,62 @@ $text-light: rgba(255, 255, 255, 0.7);
         display: block;
     }
 
-    // Modificadores de cor para a borda e o ícone
-    &--purple { border-top-color: $purple; .kpi-card__icon { color: $purple; } }
-    &--green { border-top-color: $green; .kpi-card__icon { color: $green; } }
-    &--blue { border-top-color: $blue; .kpi-card__icon { color: $blue; } }
-    &--orange { border-top-color: $orange; .kpi-card__icon { color: $orange; } }
+    // ===================================================================
+    // ESTILOS DE CORES E AJUSTE PONTUAL PARA O DESTAQUE DO MÊS
+    // ===================================================================
+    &--purple {
+        border-top-color: $purple;
+
+        .kpi-card__icon {
+            color: $purple;
+        }
+
+        // AJUSTE PONTUAL PARA O CARD DE DESTAQUE
+        .kpi-card__value {
+            font-size: 1.5rem; // <<< FONTE BEM MENOR PARA O NOME DO AGENTE
+            line-height: 1.2;
+        }
+    }
+
+    &--green {
+        border-top-color: $green;
+
+        .kpi-card__icon {
+            color: $green;
+        }
+    }
+
+    &--blue {
+        border-top-color: $blue;
+
+        .kpi-card__icon {
+            color: $blue;
+        }
+    }
+
+    &--orange {
+        border-top-color: $orange;
+
+        .kpi-card__icon {
+            color: $orange;
+        }
+    }
+
+    &--red {
+        border-top-color: $red;
+
+        .kpi-card__icon {
+            color: $red;
+        }
+    }
+
+    &--yellow {
+        border-top-color: $yellow;
+
+        .kpi-card__icon {
+            color: $yellow;
+        }
+    }
 }
 
 // Seção principal (gráfico e feed)
@@ -94,24 +152,44 @@ $text-light: rgba(255, 255, 255, 0.7);
     grid-template-columns: minmax(0, 2fr) minmax(0, 1fr);
     gap: 24px;
     align-items: flex-start;
-    @media (max-width: 1200px) { grid-template-columns: 1fr; }
+
+    @media (max-width: 1200px) {
+        grid-template-columns: 1fr;
+    }
+
     margin-bottom: 100px;
 }
 
-.chart-container, .activity-feed-container {
+.chart-container,
+.activity-feed-container {
     background: $surface-color;
     border: 1px solid $border-color;
     border-radius: 12px;
     padding: 24px;
-    h2 { margin-top: 0; margin-bottom: 24px; font-weight: 600; font-size: 1.2rem; }
+
+    h2 {
+        margin-top: 0;
+        margin-bottom: 24px;
+        font-weight: 600;
+        font-size: 1.2rem;
+    }
 }
 
 .chart-wrapper {
     height: 350px;
     width: 100%;
+
     ::ng-deep .ngx-charts {
-        text, .axis-label, .tick-label text { fill: $text-light !important; }
-        .grid-panel line { stroke: $border-color !important; }
+
+        text,
+        .axis-label,
+        .tick-label text {
+            fill: $text-light !important;
+        }
+
+        .grid-panel line {
+            stroke: $border-color !important;
+        }
     }
 }
 
@@ -127,18 +205,41 @@ $text-light: rgba(255, 255, 255, 0.7);
     padding-top: 0;
     max-height: 350px;
     overflow-y: auto;
+
     .activity-item {
         height: auto !important;
         padding: 12px 0 !important;
         border-bottom: 1px solid $border-color;
-        &:last-child { border-bottom: none; }
+
+        &:last-child {
+            border-bottom: none;
+        }
     }
+
     .activity-icon {
-        &.status--instalada { color: $green; }
-        &.status--cancelada { color: $red; } // Agora funciona
-        &.status--pendencia { color: $yellow; } // Agora funciona
-        &.status--em-aprovisionamento { color: $blue; }
+        &.status--instalada {
+            color: $green;
+        }
+
+        &.status--cancelada {
+            color: $red;
+        }
+
+        &.status--pendencia {
+            color: $yellow;
+        }
+
+        &.status--em-aprovisionamento {
+            color: $blue;
+        }
     }
-    .activity-title { font-size: 0.9rem; }
-    .activity-subtitle { font-size: 0.8rem; color: $text-light; }
+
+    .activity-title {
+        font-size: 0.9rem;
+    }
+
+    .activity-subtitle {
+        font-size: 0.8rem;
+        color: $text-light;
+    }
 }
