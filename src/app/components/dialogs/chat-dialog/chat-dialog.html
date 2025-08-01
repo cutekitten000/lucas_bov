@@ -33,7 +33,8 @@
             </button>
         </div>
 
-        <div class="pinned-message-container" *ngIf="(pinnedMessage$ | async) as pinnedMsg" (click)="showPinnedMessage(pinnedMsg)">
+        <div class="pinned-message-container" *ngIf="(pinnedMessage$ | async) as pinnedMsg"
+            (click)="showPinnedMessage(pinnedMsg)">
             <div class="pinned-message-content">
                 <mat-icon class="pin-icon">push_pin</mat-icon>
                 <div class="pinned-message-details">
@@ -41,8 +42,9 @@
                     <span class="pinned-text">{{ pinnedMsg.text || 'Arquivo: ' + pinnedMsg.fileName }}</span>
                 </div>
             </div>
-            <button mat-icon-button *ngIf="currentUser?.role === 'admin'" (click)="unpinMessage(pinnedMsg.id!); $event.stopPropagation()"
-                aria-label="Desafixar mensagem" matTooltip="Desafixar">
+            <button mat-icon-button *ngIf="currentUser?.role === 'admin'"
+                (click)="unpinMessage(pinnedMsg.id!); $event.stopPropagation()" aria-label="Desafixar mensagem"
+                matTooltip="Desafixar">
                 <mat-icon>close</mat-icon>
             </button>
         </div>
@@ -78,7 +80,8 @@
                             <div *ngIf="msg.text" class="message-text image-caption">{{ msg.text }}</div>
                         </div>
 
-                        <div *ngIf="msg.fileType && !msg.fileType.startsWith('image/') && msg.fileType !== 'text'" class="message-file">
+                        <div *ngIf="msg.fileType && !msg.fileType.startsWith('image/') && msg.fileType !== 'text'"
+                            class="message-file">
                             <mat-icon>description</mat-icon>
                             <div class="file-info">
                                 <a [href]="msg.fileUrl" target="_blank" rel="noopener noreferrer">{{ msg.fileName }}</a>
@@ -103,9 +106,12 @@
                 accept="image/png, image/jpeg, image/gif, application/pdf, .doc, .docx, .txt">
 
             <mat-form-field class="expand" appearance="outline">
-                <input matInput placeholder="Digite sua mensagem..." [formControl]="newMessageControl"
-                    (keydown.enter)="sendMessage()" />
+                <textarea matInput cdkTextareaAutosize cdkAutosizeMinRows="1" cdkAutosizeMaxRows="5"
+                    placeholder="Digite sua mensagem... (Shift + Enter para nova linha)"
+                    [formControl]="newMessageControl" (keydown)="handleEnterKey($event)">
+    </textarea>
             </mat-form-field>
+
             <button class="btn-expand" mat-fab color="accent" (click)="sendMessage()"
                 [disabled]="newMessageControl.invalid || isUploading" aria-label="Enviar mensagem">
                 <mat-icon>send</mat-icon>

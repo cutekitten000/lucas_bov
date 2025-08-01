@@ -19,7 +19,7 @@ $admin-highlight-color: #8b5cf6; // Roxo para o admin
 
 // --- BARRA LATERAL ---
 .conversations-list {
-  width: 280px;
+  width: 300px;
   background-color: $surface-color;
   border-right: 1px solid $border-color;
   display: flex;
@@ -122,7 +122,7 @@ $admin-highlight-color: #8b5cf6; // Roxo para o admin
   gap: 16px;
   padding: 16px 24px;
   border-top: 1px solid $border-color;
-  align-items: center;
+  align-items: flex-start;
   flex-shrink: 0;
   background-color: var(--mat-sys-color-surface);
 
@@ -171,6 +171,21 @@ $admin-highlight-color: #8b5cf6; // Roxo para o admin
     &:disabled {
       background-color: #334155;
       opacity: 0.5;
+    }
+  }
+
+  textarea.mat-mdc-input-element {
+    resize: none; // Impede que o usuário redimensione manualmente
+    // Estilo da barra de rolagem
+    &::-webkit-scrollbar {
+        width: 6px;
+    }
+    &::-webkit-scrollbar-track {
+        background: transparent;
+    }
+    &::-webkit-scrollbar-thumb {
+        background-color: rgba(255, 255, 255, 0.2);
+        border-radius: 10px;
     }
   }
 }

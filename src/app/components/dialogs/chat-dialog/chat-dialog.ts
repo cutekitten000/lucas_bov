@@ -1,3 +1,4 @@
+import { CdkTextareaAutosize, TextFieldModule } from '@angular/cdk/text-field';
 import { CommonModule, DatePipe } from '@angular/common';
 import {
     AfterViewChecked,
@@ -130,7 +131,7 @@ type ChatSelection =
         `,
     ],
     standalone: true,
-    imports: [MatDialogModule, MatButtonModule, CommonModule, MatIconModule],
+    imports: [MatDialogModule, MatButtonModule, CommonModule, MatIconModule, ],
 })
 export class PinnedMessageDialog {
     data: ChatMessage = inject(MAT_DIALOG_DATA);
@@ -153,6 +154,8 @@ export class PinnedMessageDialog {
         MatListModule,
         DatePipe,
         MatTooltipModule,
+        TextFieldModule,
+        CdkTextareaAutosize, 
     ],
     templateUrl: './chat-dialog.html',
     styleUrl: './chat-dialog.scss',
@@ -203,6 +206,15 @@ export class ChatDialog implements OnInit, AfterViewChecked, OnDestroy {
         if (this.messagesSubscription) {
             this.messagesSubscription.unsubscribe();
         }
+    }
+
+    public handleEnterKey(event: KeyboardEvent): void {
+        if (event.key === 'Enter' && !event.shiftKey) {
+            // Se for SÓ Enter, previne a quebra de linha e envia a mensagem.
+            event.preventDefault(); 
+            this.sendMessage();
+        }
+        // Se for Shift + Enter, não faz nada e deixa o navegador criar a nova linha.
     }
 
     showPinnedMessage(message: ChatMessage): void {
