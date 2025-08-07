@@ -50,7 +50,7 @@ export class ChatService {
    */
   getGroupChatMessages(): Observable<ChatMessage[]> {
     const messagesColRef = collection(this.firestore, 'group-chat');
-    const q = query(messagesColRef, orderBy('timestamp', 'asc'), limit(100));
+    const q = query(messagesColRef, orderBy('timestamp', 'asc'), limit(1000));
     return collectionData(q, { idField: 'id' }) as Observable<ChatMessage[]>;
   }
 
