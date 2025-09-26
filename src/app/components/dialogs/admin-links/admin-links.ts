@@ -1,8 +1,8 @@
-import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { Component } from '@angular/core';
+import { MatButtonModule } from '@angular/material/button';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
-import { MatButtonModule } from '@angular/material/button';
 
 @Component({
   selector: 'app-admin-links',
@@ -26,7 +26,7 @@ export class AdminLinks {
     { name: 'SOL', url: 'http://siwpw01b/Sol/login.aspx?ReturnUrl=%2fsol', icon: 'solar_power' },
     { name: 'Micro monitorias', url: 'https://app.powerbi.com/groups/me/reports/e0de3217-87b0-42a9-906e-b7050db4d711/ReportSection?ctid=2b787135-ca3a-486c-bd0a-f6015fbf39b8&experience=power-bi', icon: 'monitoring' },
     { name: 'GENTE ATENDE', url: 'https://intranettahto.local.srv.br/genteemacao/usuario/atendimento/MenuAtendimento.jsf', icon: 'hearing' },
-    { name: 'BR PRONTO', url: 'https://ged360.oi.net.br/brprontopdv/autenticacao/index', icon: 'storefront' },
+    { name: 'BR PRONTO', url: 'https://ged360.niointernet.app.br/brprontopdv/autenticacao/index', icon: 'storefront' },
     { name: 'ITSM (ABRIR CHAMADOS)', url: 'https://tahto.sysaidit.com/', icon: 'support' },
     { name: 'Ahtlas', url: 'https://ahtlas.tahto.net.br', icon: 'hub' },
     { name: 'Blip supervisor', url: 'https://oinetbr2.blip.ai/application/detail/oitahtodeskprd/attendance/desk/monitoring', icon: 'chat' },

@@ -19,7 +19,7 @@ export class UsefulLinksDialog {
     { label: 'Alterar Senha BC', icon: 'manage_accounts', url: 'https://identidadeoi.oi.net.br/home', class: 'senhaBc' },
     { label: 'Alterar Senha TH', icon: 'manage_accounts', url: 'https://id.tahto.net.br/', class: 'senhaTh' },
     { label: 'Vtal', icon: 'map', url: 'https://portaloperacional.vtal.com.br', class: 'vtal' },
-    { label: 'BrPronto', icon: 'contacts', url: 'https://ged360.oi.net.br/brprontopdv/#', class: 'brPronto' },
+    { label: 'BrPronto', icon: 'contacts', url: 'https://ged360.niointernet.app.br/brprontopdv/autenticacao/index', class: 'brPronto' },
     { label: 'Passaporte', icon: 'description', url: 'https://passaporte.oi.intranet/', class: 'passaporte' },
     { label: 'WFM', icon: 'alarm', url: 'https://wfmtahto.neosyx.com/login/', class: 'wfm' },
     { label: 'GIP', icon: 'person', url: 'http://gip.brasiltelecom.com.br/gip/index.xhtml', class: 'gip' },
